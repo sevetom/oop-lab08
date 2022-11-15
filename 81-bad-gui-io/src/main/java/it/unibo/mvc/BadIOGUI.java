@@ -18,6 +18,8 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Random;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 /**
  * This class is a simple application that writes a random number on a file.
@@ -46,10 +48,10 @@ public class BadIOGUI {
         firstCanvas.setLayout(new BoxLayout(firstCanvas, BoxLayout.LINE_AXIS));
         final JButton write = new JButton("Write on file");
         final JButton read = new JButton("Read file");
-        //canvas.add(write, BorderLayout.CENTER);
+        canvas.add(firstCanvas, BorderLayout.CENTER);
         firstCanvas.add(read);
         firstCanvas.add(write, BorderLayout.CENTER);
-        frame.setContentPane(firstCanvas);
+        frame.setContentPane(canvas);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         /*
          * Handlers
