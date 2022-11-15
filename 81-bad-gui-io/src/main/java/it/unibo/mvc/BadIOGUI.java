@@ -18,8 +18,6 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Random;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 /**
  * This class is a simple application that writes a random number on a file.
