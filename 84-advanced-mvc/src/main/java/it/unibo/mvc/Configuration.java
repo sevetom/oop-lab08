@@ -1,5 +1,9 @@
 package it.unibo.mvc;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 /**
  * Encapsulates the concept of configuration.
@@ -63,14 +67,35 @@ public final class Configuration {
      */
     public static class Builder {
 
-        private static final int MIN = 0;
-        private static final int MAX = 100;
-        private static final int ATTEMPTS = 10;
-
-        private int min = MIN;
-        private int max = MAX;
-        private int attempts = ATTEMPTS;
+        private int min;
+        private int max;
+        private int attempts;
         private boolean consumed = false;
+
+        private void loadSettings() {
+            final InputStream in = ClassLoader.getSystemResourceAsStream("src/main/resources/config.yml");
+            final BufferedReader br = new BufferedReader(new InputStreamReader(in));
+            try {
+                final String minLine = br.readLine();
+                final String maxLine = br.readLine();
+                final String attLine = br.readLine();
+                String[] mins = minLine.split("\\s");
+                String[] maxs = maxLine.split("\\s");
+                String[] atts = attLine.split("\\s");
+                this.setMin(Integer.parseInt(mins[1]));
+                this.setMax(Integer.parseInt(maxs[1]));
+                this.setAttempts(Integer.parseInt(atts[1]));
+            } catch (IOException e) {
+                System.out.println("Error when loading resources");
+                e.printStackTrace();
+            }
+            try {
+                in.close();
+            } catch (IOException e) {
+                System.out.println("Error when closing resources file");
+                e.printStackTrace();
+            }
+        }
 
         /**
          * @param min the minimum value
@@ -107,6 +132,7 @@ public final class Configuration {
                 throw new IllegalStateException("The builder can only be used once");
             }
             consumed = true;
+            this.loadSettings();
             return new Configuration(max, min, attempts);
         }
     }
