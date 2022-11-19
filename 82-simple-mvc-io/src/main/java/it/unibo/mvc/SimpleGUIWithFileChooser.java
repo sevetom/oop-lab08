@@ -26,6 +26,9 @@ public final class SimpleGUIWithFileChooser {
     private final JFrame frame = new JFrame();
     private final Controller controller = new Controller();
 
+    /**
+     * Crates a new SimpleGUIWithFileChooser.
+     */
     public SimpleGUIWithFileChooser() {
         frame.setTitle("My second Java graphical interface");
         final JPanel up = new JPanel();
@@ -47,19 +50,18 @@ public final class SimpleGUIWithFileChooser {
 
         save.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent arg0) {
+            public void actionPerformed(final ActionEvent arg0) {
                 try {
                     controller.writeFile(text.getText());
                 } catch (IOException e) {
-                    System.out.println("GUI controller encountered an error");
-                    e.printStackTrace();
+                    e.printStackTrace(); // NOPMD: allowed as this is just an exercise
                 }
             }
         });
 
         browse.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent arg0) {
+            public void actionPerformed(final ActionEvent arg0) {
                 final JFileChooser chooseFile = new JFileChooser("Select a new file");
                 switch (chooseFile.showSaveDialog(frame)) {
                     case JFileChooser.APPROVE_OPTION:
@@ -76,6 +78,9 @@ public final class SimpleGUIWithFileChooser {
         });
     }
 
+    /**
+     * Displays the SimpleGUIWithFileChooser.
+     */
     private void display() {
         final Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
         final int sw = (int) screen.getWidth();
@@ -85,7 +90,12 @@ public final class SimpleGUIWithFileChooser {
         frame.setVisible(true);
     }
 
-    public static void main(String[] args) {
+    /**
+     * Starts the SimpleGUIWithFileChooser.
+     * 
+     * @param args
+     */
+    public static void main(final String[] args) {
         new SimpleGUIWithFileChooser().display();
     }
 }

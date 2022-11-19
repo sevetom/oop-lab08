@@ -23,6 +23,9 @@ public final class SimpleGUI {
     private final JFrame frame = new JFrame();
     private final Controller controller = new Controller();
 
+    /**
+     * Crates a new SimpleGUI.
+     */
     public SimpleGUI() {
         frame.setTitle("My first Java graphical interface");
         final JPanel panel = new JPanel();
@@ -36,17 +39,19 @@ public final class SimpleGUI {
 
         save.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent arg0) {
+            public void actionPerformed(final ActionEvent arg0) {
                 try {
                     controller.writeFile(text.getText());
                 } catch (IOException e) {
-                    System.out.println("GUI controller encountered an error");
-                    e.printStackTrace();
+                    e.printStackTrace(); // NOPMD: allowed as this is just an exercise
                 }
             }
         });
     }
 
+    /**
+     * Displays the SimpleGUI.
+     */
     private void display() {
         final Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
         final int sw = (int) screen.getWidth();
@@ -56,7 +61,12 @@ public final class SimpleGUI {
         frame.setVisible(true);
     }
 
-    public static void main(String[] args) {
+    /**
+     * Starts the SimpleGUI.
+     * 
+     * @param args
+     */
+    public static void main(final String[] args) {
         new SimpleGUI().display();
     }
 }

@@ -13,8 +13,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Random;
@@ -75,15 +76,14 @@ public class BadIOGUI {
 
         read.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent arg0) {
-                try (final BufferedReader fr = new BufferedReader(new FileReader(PATH))) {
-                    System.out.println(fr.readLine());
+            public void actionPerformed(final ActionEvent arg0) {
+                try (BufferedReader fr = new BufferedReader(new InputStreamReader(new FileInputStream(PATH), "UTF-8"))) {
+                    System.out.println(fr.readLine()); // NOPMD: allowed as this is just an exercise
                 } catch (IOException e2) {
                     JOptionPane.showMessageDialog(frame, e2, "Error", JOptionPane.ERROR_MESSAGE);
-                    e2.printStackTrace();
+                    e2.printStackTrace(); // NOPMD: allowed as this is just an exercise
                 }
             }
-            
         });
     }
 
