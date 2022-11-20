@@ -67,13 +67,22 @@ public final class Configuration {
      */
     public static class Builder {
 
+        private static final int MIN = 0;
+        private static final int MAX = 100;
+        private static final int ATTEMPTS = 10;
+
         private int min;
         private int max;
         private int attempts;
         private boolean consumed = false;
 
-        private void loadSettings() {
-            final InputStream in = ClassLoader.getSystemResourceAsStream("src/main/resources/config.yml");
+        /**
+         * Loads settings from file.
+         * 
+         * @param congfigFile
+         */
+        private void loadSettings(final String congfigFile) {
+            final InputStream in = ClassLoader.getSystemResourceAsStream(congfigFile);
             final BufferedReader br = new BufferedReader(new InputStreamReader(in));
             try {
                 final String minLine = br.readLine();
@@ -95,6 +104,12 @@ public final class Configuration {
                 System.out.println("Error when closing resources file");
                 e.printStackTrace();
             }
+        }
+
+        private void loadDefaultSettings() {
+            this.setMin(Builder.MIN);
+            this.setMax(Builder.MAX);
+            this.setAttempts(Builder.ATTEMPTS);
         }
 
         /**
@@ -127,12 +142,16 @@ public final class Configuration {
         /**
          * @return a configuration
          */
-        public final Configuration build() {
+        public final Configuration build(final String configFile) {
             if (consumed) {
                 throw new IllegalStateException("The builder can only be used once");
             }
             consumed = true;
-            this.loadSettings();
+            if (configFile == null) {
+                this.loadDefaultSettings();
+            } else {
+                this.loadSettings(configFile);
+            }
             return new Configuration(max, min, attempts);
         }
     }

@@ -4,12 +4,11 @@ import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 /**
  */
 public final class DrawNumberApp implements DrawNumberViewObserver {
-    private static final int MIN = 0;
-    private static final int MAX = 100;
-    private static final int ATTEMPTS = 10;
 
     private final DrawNumber model;
     private final List<DrawNumberView> views;
@@ -18,7 +17,7 @@ public final class DrawNumberApp implements DrawNumberViewObserver {
      * @param views
      *            the views to attach
      */
-    public DrawNumberApp(final DrawNumberView... views) {
+    public DrawNumberApp(final String configFile, final DrawNumberView... views) {
         /*
          * Side-effect proof
          */
@@ -27,7 +26,16 @@ public final class DrawNumberApp implements DrawNumberViewObserver {
             view.setObserver(this);
             view.start();
         }
-        this.model = new DrawNumberImpl(MIN, MAX, ATTEMPTS);
+        final Configuration configuration = new Configuration.Builder().build(configFile);
+        if (configuration.isConsistent()) {
+            this.model = new DrawNumberImpl(configuration);
+        } else {
+            JOptionPane.showMessageDialog(null, "Inconsistent configuration: "
+                + "min: " + configuration.getMin() + ", "
+                + "max: " + configuration.getMax() + ", "
+                + "attempts: " + configuration.getAttempts() + ". Using defaults instead.");
+            this.model = new DrawNumberImpl(new Configuration.Builder().build(null));
+        }
     }
 
     @Override
@@ -66,7 +74,8 @@ public final class DrawNumberApp implements DrawNumberViewObserver {
      * @throws FileNotFoundException 
      */
     public static void main(final String... args) throws FileNotFoundException {
-        new DrawNumberApp(new DrawNumberViewImpl(),
+        new DrawNumberApp("config.yml",
+            new DrawNumberViewImpl(),
             new DrawNumberViewImpl(),
             new PrintStreamView(System.out),
             new PrintStreamView("output.log")

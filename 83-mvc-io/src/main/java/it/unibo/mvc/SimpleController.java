@@ -17,7 +17,6 @@ public final class SimpleController implements Controller {
      * Crates a new SimpleController.
      */
     public SimpleController() {
-        this.print = "";
         this.history = new LinkedList<>();
     }
 
@@ -57,7 +56,7 @@ public final class SimpleController implements Controller {
      */
     @Override
     public void printCurrentString() {
-        if (!this.print.isEmpty()) {
+        if (this.print != null) {
             System.out.println(this.print); // NOPMD: allowed as this is just an exercise
             history.add(this.print);
         } else {

@@ -21,12 +21,13 @@ public final class SimpleGUI {
     private static final int PROPORTION = 5;
 
     private final JFrame frame = new JFrame();
-    private final SimpleController controller = new SimpleController();
 
     /**
      * Crates a new SimpleGUI.
+     * 
+     * @param controller
      */
-    public SimpleGUI() {
+    public SimpleGUI(final SimpleController controller) {
         frame.setTitle("SimpleGUI test");
         final JPanel panel = new JPanel();
         final JPanel buttons = new JPanel();
@@ -80,6 +81,6 @@ public final class SimpleGUI {
      * @param args
      */
     public static void main(final String[] args) {
-        new SimpleGUI().display();
+        new SimpleGUI(new SimpleController()).display();
     }
 }

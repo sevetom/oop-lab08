@@ -2,6 +2,7 @@ package it.unibo.mvc;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
@@ -21,12 +22,13 @@ public final class SimpleGUI {
     private static final int PROPORTION = 5;
 
     private final JFrame frame = new JFrame();
-    private final Controller controller = new Controller();
 
     /**
      * Crates a new SimpleGUI.
+     *
+     * @param controller
      */
-    public SimpleGUI() {
+    public SimpleGUI(final Controller controller) {
         frame.setTitle("My first Java graphical interface");
         final JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
@@ -43,6 +45,7 @@ public final class SimpleGUI {
                 try {
                     controller.writeFile(text.getText());
                 } catch (IOException e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Couldn't save", JOptionPane.ERROR_MESSAGE);
                     e.printStackTrace(); // NOPMD: allowed as this is just an exercise
                 }
             }
@@ -67,6 +70,6 @@ public final class SimpleGUI {
      * @param args
      */
     public static void main(final String[] args) {
-        new SimpleGUI().display();
+        new SimpleGUI(new Controller()).display();
     }
 }

@@ -27,7 +27,12 @@ public class Controller {
      * @param file
      */
     public void setFile(final File file) {
-        this.currentFile = file;
+        final File parent = file.getParentFile();
+        if (parent.exists()) {
+            this.currentFile = file;
+        } else {
+            throw new IllegalArgumentException("Cannot save in a non-existing folder.");
+        }
     }
 
     /**
@@ -40,6 +45,15 @@ public class Controller {
     }
 
     /**
+     * Returns the path of the current setted file.
+     * 
+     * @return currentPath
+     */
+    public String getPath() {
+        return this.currentFile.getPath();
+    }
+
+    /**
      * Writes a String on a set file.
      * 
      * @param content
@@ -47,10 +61,6 @@ public class Controller {
     public void writeFile(final String content) throws IOException {
         try (BufferedWriter fw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(currentFile), "UTF-8"))) {
             fw.write(content);
-        } catch (IOException e) {
-            System.out.println("Error when writing on "   // NOPMD: allowed as this is just an exercise
-                    + this.currentFile.getAbsolutePath());
-            e.printStackTrace(); // NOPMD: allowed as this is just an exercise
         }
     }
 }

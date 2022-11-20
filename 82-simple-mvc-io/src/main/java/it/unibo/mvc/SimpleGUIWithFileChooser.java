@@ -24,12 +24,13 @@ public final class SimpleGUIWithFileChooser {
     private static final int PROPORTION = 5;
 
     private final JFrame frame = new JFrame();
-    private final Controller controller = new Controller();
 
     /**
      * Crates a new SimpleGUIWithFileChooser.
+     *
+     * @param controller
      */
-    public SimpleGUIWithFileChooser() {
+    public SimpleGUIWithFileChooser(final Controller controller) {
         frame.setTitle("My second Java graphical interface");
         final JPanel up = new JPanel();
         final JPanel bottom = new JPanel();
@@ -40,7 +41,7 @@ public final class SimpleGUIWithFileChooser {
         final JButton browse = new JButton("Browse...");
         final JTextArea text = new JTextArea();
         final JButton save = new JButton("Save");
-        up.add(filePath);
+        up.add(filePath, BorderLayout.CENTER);
         up.add(browse, BorderLayout.LINE_END);
         bottom.add(up, BorderLayout.NORTH);
         bottom.add(text, BorderLayout.CENTER);
@@ -54,6 +55,7 @@ public final class SimpleGUIWithFileChooser {
                 try {
                     controller.writeFile(text.getText());
                 } catch (IOException e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Couldn't save", JOptionPane.ERROR_MESSAGE);
                     e.printStackTrace(); // NOPMD: allowed as this is just an exercise
                 }
             }
@@ -96,6 +98,6 @@ public final class SimpleGUIWithFileChooser {
      * @param args
      */
     public static void main(final String[] args) {
-        new SimpleGUIWithFileChooser().display();
+        new SimpleGUIWithFileChooser(new Controller()).display();
     }
 }
